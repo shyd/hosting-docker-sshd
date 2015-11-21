@@ -10,7 +10,8 @@ RUN apt-get install -y pwgen
 RUN apt-get install -y git curl wget
 
 RUN mkdir /var/run/sshd
-RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin no/' /etc/ssh/sshd_config
+RUN sed -i 's/#AuthorizedKeysFile/AuthorizedKeysFile/' /etc/ssh/sshd_config
 
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
@@ -21,7 +22,6 @@ RUN echo "export VISIBLE=now" >> /etc/profile
 VOLUME ["/var/log", "/home"]
 
 ADD supervisor-sshd.conf /etc/supervisor/conf.d/supervisor-sshd.conf
-#ADD setup.sh /setup.sh
 ADD run.sh /run.sh
 
 # MAKE SCRIPT EXCUTABLE
