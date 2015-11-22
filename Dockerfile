@@ -3,13 +3,15 @@ MAINTAINER Sol&TIC <serveur@soletic.org>
 
 ENV DEBIAN_FRONTEND noninteractive
 
+# Allow restart/stop service when we upgrade (see http://askubuntu.com/questions/365911/why-the-services-do-not-start-at-installation)
+RUN sed -ri -e "s/101/0/" /usr/sbin/policy-rc.d
+
 RUN apt-get update && apt-get install -y openssh-server supervisor 
 RUN apt-get install -y pwgen
 
 # Useful toos to deploy strategy
 RUN apt-get install -y git curl wget
 
-RUN mkdir /var/run/sshd
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin no/' /etc/ssh/sshd_config
 RUN sed -i 's/#AuthorizedKeysFile/AuthorizedKeysFile/' /etc/ssh/sshd_config
 
