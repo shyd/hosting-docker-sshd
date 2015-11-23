@@ -5,6 +5,9 @@ RUN apt-get update && \
   apt-get install -y openssh-server && \
   apt-get install -y pwgen git curl wget
 
+ENV WORKER_NAME ""
+ENV WORKER_UID 10001
+
 RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin no/' /etc/ssh/sshd_config
 RUN sed -i 's/#AuthorizedKeysFile/AuthorizedKeysFile/' /etc/ssh/sshd_config
 

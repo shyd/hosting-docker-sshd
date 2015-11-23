@@ -15,10 +15,15 @@ echo "$ROOT_PASSWORD" > /credentials
 chmod 600 /credentials
 
 # Add a user
-if id -u "sshguest" >/dev/null 2>&1; then
-	echo sshguest:$ROOT_PASSWORD | chpasswd
+user=${WORKER_NAME}
+userid=${WORKER_UID}
+if [ "$user" = "" ]; then
+	user="sshguest"
+fi
+if id -u "$user" >/dev/null 2>&1; then
+	echo "$user:$ROOT_PASSWORD" | chpasswd
 else
-	useradd -m -s /bin/bash --home-dir=/home/sshguest --user-group sshguest; echo sshguest:$ROOT_PASSWORD | chpasswd
+	useradd -m -u $userid -s /bin/bash --home-dir=/home/$user --user-group $user; echo "$user:$ROOT_PASSWORD" | chpasswd
 fi
 
 exec /usr/sbin/sshd -D
