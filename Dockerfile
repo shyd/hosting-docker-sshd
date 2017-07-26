@@ -1,9 +1,9 @@
-FROM soletic/ubuntu
-MAINTAINER Sol&TIC <serveur@soletic.org>
+FROM debian
 
 RUN apt-get update && \
-  apt-get install -y openssh-server && \
-  apt-get install -y pwgen git curl wget
+    apt-get install -y \
+    openssh-server \
+    pwgen git curl wget zsh
 
 ENV WORKER_NAME ""
 ENV WORKER_UID 10001
